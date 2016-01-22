@@ -58,12 +58,12 @@
 #define DOUBLE			      /* Double word primitives (2DUP) */
 #define EVALUATE		      /* The EVALUATE primitive */
 #define FILEIO			      /* File I/O primitives */
-#define TCP		      		  /* TCP functions */
-#define WEBSOCKETS		      /* Websockets functions */
+//#define TCP		      		/* TCP functions */
+//#define WEBSOCKETS          /* Websockets functions */
 //#define GERTBOARD		      /* Gertboard functions */
-#define I2C					  /* I2C functions */
+//#define I2C					/* I2C functions */
 //#define WIRINGPI			  /* WiringPi functions */
-#define TELLDUS            	  /* Tellstick functions */
+//#define TELLDUS          		/* Tellstick functions */
 #define MATH			      /* Math functions */
 #define MEMMESSAGE		      /* Print message for stack/heap errors */
 #define PROLOGUE		      /* Prologue processing and auto-init */
