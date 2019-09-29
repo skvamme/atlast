@@ -1,5 +1,5 @@
 # atlast
-ATLAST Forth based programmable Erlang Port
+ATLAST Forth. Use it standalone, or as a programmable Erlang Port
 
 Check before first time compile that all extras are out-commented, like this, in atlast.c
 
