@@ -7,14 +7,17 @@ COPTIONS = -g -Wall
 CC = gcc
 
 LIBRARIES = -lm
+# LIBRARIES = -lrt -lm -L/usr/local/lib -lwiringPi -lnopoll
 
 INCLUDE =
+# INCLUDE = -I/usr/local/include/nopoll -Wl,-rpath -Wl,/usr/local/lib
 
 ATLCONFIG = -DMEMSTAT -DALIGNMENT -DEXPORT -DREADONLYSTRINGS
 
 CFLAGS = $(COPTIONS) $(INCLUDE) $(ATLCONFIG)
 
 ATLOBJ = atlast.o atlmain.o
+# ATLOBJ = atlast.o gb_common.o gb_spi.o atlmain.o
 
 APPS = atlast primdeftest
 
