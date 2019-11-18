@@ -4,7 +4,7 @@ ATLAST Forth. Use it standalone, or as a programmable Erlang Port. Documentation
 Check before first time compile that all extras are out-commented, like this, in atlast.c
 
 	#define FILEIO			      /* File I/O primitives */
-	//#define TCP		      		/* TCP functions */
+	#define TCP		      		/* TCP functions */
 	//#define WEBSOCKETS          /* Websockets functions */
 	//#define GERTBOARD		      /* Gertboard functions */
 	//#define I2C					/* I2C functions */
