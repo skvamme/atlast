@@ -58,7 +58,7 @@
 #define DOUBLE			      /* Double word primitives (2DUP) */
 #define EVALUATE		      /* The EVALUATE primitive */
 #define FILEIO			      /* File I/O primitives */
-//#define TCP		      		/* TCP functions */
+#define TCP		      		/* TCP functions */
 //#define WEBSOCKETS          /* Websockets functions */
 //#define GERTBOARD		      /* Gertboard functions */
 //#define I2C					/* I2C functions */
@@ -2657,6 +2657,12 @@ prim P_system()
     Hpc(S0);
     S0 = system((char *) S0);
 }
+
+prim P_juliantime() /* seconds since 1970-01-01 */
+{
+    Push = (stackitem) time(NULL);
+}
+
 #endif /* SYSTEM */
 
 #ifdef TRACE
@@ -3293,6 +3299,7 @@ static struct primfcn primt[] = {
 
 #ifdef SYSTEM
     {"0SYSTEM", P_system},
+    {"0TIME", P_juliantime},
 #endif
 #ifdef TRACE
     {"0TRACE", P_trace},
