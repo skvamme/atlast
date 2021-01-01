@@ -6,8 +6,9 @@ VERSION = 1.2
 COPTIONS = -g -Wall
 CC = gcc
 
-LIBRARIES = -lm
-# LIBRARIES = -lrt -lm -L/usr/local/lib -lwiringPi -lnopoll
+#LIBRARIES = -lm
+# LIBRARIES = -lrt -lm -L/usr/local/lib -lwiringPi -lnopoll -lpigpio
+ LIBRARIES = -lrt -lm -L/usr/local/lib -lnopoll -lpigpio
 
 INCLUDE =
 # INCLUDE = -I/usr/local/include/nopoll -Wl,-rpath -Wl,/usr/local/lib

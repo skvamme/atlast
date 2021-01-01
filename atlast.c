@@ -58,12 +58,13 @@
 #define DOUBLE			      /* Double word primitives (2DUP) */
 #define EVALUATE		      /* The EVALUATE primitive */
 #define FILEIO			      /* File I/O primitives */
-#define TCP		      		/* TCP functions */
-//#define WEBSOCKETS          /* Websockets functions */
+#define TCP		      	      /* TCP functions */
+//#define WEBSOCKETS                  /* Websockets functions */
 //#define GERTBOARD		      /* Gertboard functions */
-//#define I2C					/* I2C functions */
-//#define WIRINGPI			  /* WiringPi functions */
-//#define TELLDUS          		/* Tellstick functions */
+//#define I2C			      /* I2C functions */
+//#define WIRINGPI		      /* WiringPi functions */
+//#define TELLDUS          	      /* Tellstick functions */
+#define PIGPIO                        /* PIGPIO functions */
 #define MATH			      /* Math functions */
 #define MEMMESSAGE		      /* Print message for stack/heap errors */
 #define PROLOGUE		      /* Prologue processing and auto-init */
@@ -97,6 +98,10 @@
 
 #ifdef WIRINGPI
 #include <wiringPi.h>
+#endif
+
+#ifdef PIGPIO
+#include <pigpio.h>
 #endif
 
 #ifdef TELLDUS
@@ -3125,7 +3130,63 @@ prim P_tcp_close() // --
 #endif
 
 
+#ifdef PIGPIO
+prim P_pigpio_start() // Initialize the pigpio library ( -- result ) If result is < 0 Error
+{
+	So(1); // There should be space for another item on the Forth stack
+	Push = (stackitem) gpioInitialise();
+}
 
+prim P_pigpio_stop() // Terminate the pigpio library ( -- )
+{
+	gpioTerminate();
+}
+
+prim P_pigpio_setmode() // Set mode on a gpio pin, input 0 or output 1 ( pin mode -- result)
+{
+	int result;
+	Sl(2); // There should be at least 2 items on the Forth stack
+	result = gpioSetMode(S1, S0); // S0 is the topmost Forth stack item, S1 below that and so on
+	Pop;
+	S0 = result;
+}
+
+prim P_pigpio_getmode() // Get the mode of a gpio pin ( pin -- mode)
+{
+	int result;
+	Sl(1);
+	result = gpioGetMode(S0);
+	S0 = result;
+}
+
+prim P_pigpio_setpullupdown() // Set the pullup or pulldown resistor on a gpio pin. result 0 = ok
+{						// ( pin, mode -- result ) Mode is Off = 0, Down = 1, Up = 2
+	int result;
+	Sl(2);
+	result = gpioSetPullUpDown(S1, S0); 
+	Pop;
+	S0 = result;
+}
+
+prim P_pigpio_read() // Read a gpio pin ( pin -- result ) result 0 = ok
+{
+	int result;
+	Sl(1);
+	result = gpioRead(S0);
+	S0 = result;
+}
+
+prim P_pigpio_write() // Write to a gpio pin ( pin level -- result ) result 0 = ok, level is 0 or 1
+{
+	int result;
+	Sl(2);
+	result = gpioWrite(S1,S0);
+	Pop;
+	S0 = result;
+}
+
+
+#endif
 
 /*  Table of primitive words  */
 
@@ -3427,6 +3488,15 @@ static struct primfcn primt[] = {
 #ifdef WIRINGPI
 	  {"0WIPIISR", P_wipi_setinterrupt},
 #endif /* WIRINGPI */
+#ifdef PIGPIO
+	  {"0GPIOSTART", P_pigpio_start},
+	  {"0GPIOSTOP", P_pigpio_stop},
+	  {"0GPIOSETMODE", P_pigpio_setmode},
+	  {"0GPIOGETMODE", P_pigpio_getmode},
+	  {"0GPIOSETPULLUPDOWN", P_pigpio_setpullupdown},
+	  {"0GPIOREAD", P_pigpio_read},
+	  {"0GPIOWRITE", P_pigpio_write},
+#endif /* PIGPIO */	  
     {NULL, (codeptr) 0}
 };
 
