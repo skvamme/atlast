@@ -2996,10 +2996,10 @@ prim P_wipi_setinterrupt() // pin edgetype -- bool
   // sets up the wiringPi library
     wiringPiSetup();
  
-  // set Pin 17/0 generate an interrupt on high-to-low transitions
+  // set Pin 17 to 0 generate an interrupt on high-to-low transitions
   // and attach wipiISRcallback() to the interrupt
     S0 = (wiringPiISR(pin, type, &wipiISRcallback)) ? Truth : Falsity;
-
+}
 #endif /* WIRINGPI */
 
 #ifdef I2C
@@ -3131,6 +3131,36 @@ prim P_tcp_close() // --
 
 
 #ifdef PIGPIO
+
+prim P_pigpio_trigger() // ( pin length level -- result )
+{
+	int result;
+	Sl(3);
+	result = gpioTrigger(S2, S1, S0);
+	Pop;
+	Pop;
+	S0 = result;
+}
+
+void pigpiocallback(int gpio, int level, unsigned int tick)
+{
+	So(3);
+	dictword *dw;	
+	dw = atl_lookup("pigpio");
+	Push = (stackitem) gpio;
+	Push = (stackitem) level;
+	Push = (stackitem) tick;
+        atl_exec(dw);
+}
+
+prim P_pigpio_alert() // Set a callback to a gpio pin to fire when the level changes
+{                              // Return 0 if ok ( pin -- result ) The Forth word "PIGPIO" has to be defined.
+	int result;
+	Sl(1);
+	result = gpioSetAlertFunc(S0, pigpiocallback);
+	S0 = result;
+}
+
 prim P_pigpio_start() // Initialize the pigpio library ( -- result ) If result is < 0 Error
 {
 	So(1); // There should be space for another item on the Forth stack
@@ -3147,8 +3177,8 @@ prim P_pigpio_setmode() // Set mode on a gpio pin, input 0 or output 1 ( pin mod
 	int result;
 	Sl(2); // There should be at least 2 items on the Forth stack
 	result = gpioSetMode(S1, S0); // S0 is the topmost Forth stack item, S1 below that and so on
-	Pop;
-	S0 = result;
+	Pop; // Delete the topmost item from the Forth stack
+	S0 = result; // Make the new topmost Forth stack item = result
 }
 
 prim P_pigpio_getmode() // Get the mode of a gpio pin ( pin -- mode)
@@ -3184,6 +3214,7 @@ prim P_pigpio_write() // Write to a gpio pin ( pin level -- result ) result 0 = 
 	Pop;
 	S0 = result;
 }
+
 
 
 #endif
@@ -3496,6 +3527,8 @@ static struct primfcn primt[] = {
 	  {"0GPIOSETPULLUPDOWN", P_pigpio_setpullupdown},
 	  {"0GPIOREAD", P_pigpio_read},
 	  {"0GPIOWRITE", P_pigpio_write},
+	  {"0GPIOALERT", P_pigpio_alert},
+	  {"0GPIOTRIGGER", P_pigpio_trigger},
 #endif /* PIGPIO */	  
     {NULL, (codeptr) 0}
 };
