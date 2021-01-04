@@ -3132,6 +3132,39 @@ prim P_tcp_close() // --
 
 #ifdef PIGPIO
 
+void timercallback(void)
+{
+	dictword *dw;	
+	dw = atl_lookup("timer");
+        atl_exec(dw);
+}
+
+void timercallbackex(void * name)
+{
+	dictword *dw;	
+	dw = atl_lookup(name);
+        atl_exec(dw);
+}
+
+prim P_pigpio_timer() // ( timer millisec -- result ) timer: 0-9 millisec: 10-60000
+{
+	int result;
+	Sl(2);
+	result = gpioSetTimerFunc(S1,S0,timercallback);
+	Pop;
+	S0 = result;
+}
+
+prim P_pigpio_timerex() // ( timer millisec name -- result ) timer: 0-9 millisec: 10-60000
+{
+	int result;
+	Sl(3);
+	result = gpioSetTimerFuncEx(S2,S1,timercallbackex,(char *) S0);
+	Pop;
+	S0 = result;
+}
+
+
 prim P_pigpio_trigger() // ( pin length level -- result )
 {
 	int result;
@@ -3549,6 +3582,9 @@ static struct primfcn primt[] = {
 	  {"0GPIOALERT", P_pigpio_alert},	  
 	  {"0GPIOALERTEX", P_pigpio_alertex},
 	  {"0GPIOTRIGGER", P_pigpio_trigger},
+	  {"0GPIOSETTIMERFUNC",P_pigpio_timer},
+	  {"0GPIOSETTIMERFUNCEX",P_pigpio_timerex},
+
 #endif /* PIGPIO */	  
     {NULL, (codeptr) 0}
 };
