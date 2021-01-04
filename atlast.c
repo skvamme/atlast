@@ -3153,11 +3153,30 @@ void pigpiocallback(int gpio, int level, unsigned int tick)
         atl_exec(dw);
 }
 
+void pigpiocallbackex(int gpio, int level, unsigned int tick, void * name)
+{
+	So(3);
+	dictword *dw;	
+	dw = atl_lookup(name);
+	Push = (stackitem) gpio;
+	Push = (stackitem) level;
+	Push = (stackitem) tick;
+        atl_exec(dw);
+}
+
 prim P_pigpio_alert() // Set a callback to a gpio pin to fire when the level changes
-{                              // Return 0 if ok ( pin -- result ) The Forth word "PIGPIO" has to be defined.
+{       // Return 0 if ok ( pin -- result ) The Forth word "PIGPIO" has to be defined.
 	int result;
 	Sl(1);
 	result = gpioSetAlertFunc(S0, pigpiocallback);
+	S0 = result;
+}
+prim P_pigpio_alertex() // Set a callback to a gpio pin to fire when the level changes
+{     // Return 0 if ok ( pin name -- result ) The Forth word "name" has to be defined.
+	int result;
+	Sl(2);
+	result = gpioSetAlertFuncEx(S1, pigpiocallbackex,(char *) S0);
+	Pop;
 	S0 = result;
 }
 
@@ -3527,7 +3546,8 @@ static struct primfcn primt[] = {
 	  {"0GPIOSETPULLUPDOWN", P_pigpio_setpullupdown},
 	  {"0GPIOREAD", P_pigpio_read},
 	  {"0GPIOWRITE", P_pigpio_write},
-	  {"0GPIOALERT", P_pigpio_alert},
+	  {"0GPIOALERT", P_pigpio_alert},	  
+	  {"0GPIOALERTEX", P_pigpio_alertex},
 	  {"0GPIOTRIGGER", P_pigpio_trigger},
 #endif /* PIGPIO */	  
     {NULL, (codeptr) 0}
