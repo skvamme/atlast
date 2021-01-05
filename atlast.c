@@ -3179,7 +3179,7 @@ void pigpiocallback(int gpio, int level, unsigned int tick)
 {
 	So(3);
 	dictword *dw;	
-	dw = atl_lookup("pigpio");
+	dw = atl_lookup("alert");
 	Push = (stackitem) gpio;
 	Push = (stackitem) level;
 	Push = (stackitem) tick;
@@ -3198,7 +3198,7 @@ void pigpiocallbackex(int gpio, int level, unsigned int tick, void * name)
 }
 
 prim P_pigpio_alert() // Set a callback to a gpio pin to fire when the level changes
-{       // Return 0 if ok ( pin -- result ) The Forth word "PIGPIO" has to be defined.
+{       // Return 0 if ok ( pin -- result ) The Forth word "ALERT" has to be defined.
 	int result;
 	Sl(1);
 	result = gpioSetAlertFunc(S0, pigpiocallback);
