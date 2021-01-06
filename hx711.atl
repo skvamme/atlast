@@ -1,7 +1,22 @@
 ( hx711 )
 ( SCK is gpiopin 23, DOUT is gpiopin 24, VDD is 3.3V, VCC is 5V )
-( Type GPIOSTART SETUP )
+( Type GPIOSTART DROP SETUP )
+
+variable rawval
+variable tareval
+variable scaleval
+0 tareval !
+1 scaleval !
+
 : setup 24 0 gpiosetmode . 23 1 gpiosetmode . 23 0 gpiowrite . 24 1 gpiosetpullupdown . 0 1000 gpiosettimerfunc . ;
 : get24bits 0 25 1 do 23 1 1 gpiotrigger drop 24 gpioread 25 i - shift + loop 23 1 1 gpiotrigger drop ; ( MSB first )
-: timer 24 gpioread 0 = if get24bits . cr then ;
+: timer 24 gpioread 0 = if get24bits dup rawval ! tareval @ -  scaleval @ / . cr then ;
+
+( -- )
+: tare rawval @ tareval ! ;
+
+( weight -- )
+: config rawval @ tareval @ - / scaleval ! ;
+
+( -- )
 : reset 23 100 1 gpiotrigger drop ;
