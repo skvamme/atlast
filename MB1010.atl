@@ -1,0 +1,5 @@
+: alert  depth 6 >= if 3 roll -  147 / 254 * 100 / ." "Distance: " . ." "cm" cr drop drop drop drop then ;
+: setup 24 1 gpiosetmode . 25 0 gpiosetmode . 25 1 gpiosetpullupdown . 25 gpioalert . ;
+: trig 24 20 1 gpiotrigger drop ;
+: run gpiostart drop setup ;
+( trig will output distance in cm )
