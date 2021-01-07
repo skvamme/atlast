@@ -3132,6 +3132,15 @@ prim P_tcp_close() // --
 
 #ifdef PIGPIO
 
+prim P_pigpio_watchdog() // ( pin millisec -- ) pin: 0-31 millisec: 0-60000
+{
+	int result;
+	Sl(2);
+	result = gpioSetWatchdog(S1, S0);
+	Pop;
+	S0 = result;
+}
+
 void timercallback(void)
 {
 	dictword *dw;	
@@ -3583,8 +3592,8 @@ static struct primfcn primt[] = {
 	  {"0GPIOALERTEX", P_pigpio_alertex},
 	  {"0GPIOTRIGGER", P_pigpio_trigger},
 	  {"0GPIOSETTIMERFUNC",P_pigpio_timer},
-	  {"0GPIOSETTIMERFUNCEX",P_pigpio_timerex},
-
+	  {"0GPIOSETTIMERFUNCEX", P_pigpio_timerex},
+	  {"0GPIOSETWATCHDOG", P_pigpio_watchdog}, 
 #endif /* PIGPIO */	  
     {NULL, (codeptr) 0}
 };
