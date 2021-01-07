@@ -19,7 +19,7 @@ variable scaleval
 
 ( When count is running, put a known weight on the scale and type e.g. 50 CONFIG where 50 is the weight )
 ( weight -- )
-: config tareval @ rawval @ - swap / scaleval ! ;
+: config rawval @ tareval @ - swap / scaleval ! ;
 
 ( -- )
 : reset 23 100 1 gpiotrigger drop ;
