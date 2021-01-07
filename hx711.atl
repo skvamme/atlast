@@ -1,5 +1,5 @@
-( hx711 )
-( SCK is gpiopin 23, DOUT is gpiopin 24, VDD is 3.3V, VCC is 5V )
+( sudo ./atlast -ihx711.atl )
+( Connect SCK on hx711 to gpiopin 23, DOUT to gpiopin 24, VDD to 3.3V, VCC to 5V, GND to GND )
 ( Type GPIOSTART DROP SETUP )
 
 variable rawval
@@ -8,15 +8,18 @@ variable scaleval
 0 tareval !
 1 scaleval !
 
+( -- )
 : setup 24 0 gpiosetmode . 23 1 gpiosetmode . 23 0 gpiowrite . 24 1 gpiosetpullupdown . 0 1000 gpiosettimerfunc . ;
 : get24bits 0 25 1 do 23 1 1 gpiotrigger drop 24 gpioread 25 i - shift + loop 23 1 1 gpiotrigger drop ; ( MSB first )
 : timer 24 gpioread 0 = if get24bits dup rawval ! tareval @ -  scaleval @ / . cr then ;
 
+( When count is running, you can type TARE as many times as you like to get as close to zero as possible )
 ( -- )
 : tare rawval @ tareval ! ;
 
+( When count is running, put a known weight on the scale and type e.g. 50 CONFIG where 50 is the weight )
 ( weight -- )
-: config rawval @ tareval @ - / scaleval ! ;
+: config tareval @ rawval @ - swap / scaleval ! ;
 
 ( -- )
 : reset 23 100 1 gpiotrigger drop ;
