@@ -10,7 +10,7 @@ variable scaleval
 
 ( -- )
 : setup 24 0 gpiosetmode . 23 1 gpiosetmode . 23 0 gpiowrite . 24 1 gpiosetpullupdown . 0 1000 gpiosettimerfunc . ;
-: get24bits 0 25 1 do 23 1 1 gpiotrigger drop 24 gpioread 25 i - shift + loop 23 1 1 gpiotrigger drop ; ( MSB first )
+: get24bits 0 24 0 do 23 1 1 gpiotrigger drop 24 gpioread 25 i - shift + loop 23 1 1 gpiotrigger drop ; ( MSB first )
 : timer 24 gpioread 0 = if get24bits dup rawval ! tareval @ -  scaleval @ / . cr then ;
 
 ( When count is running, you can type TARE as many times as you like to get as close to zero as possible )
