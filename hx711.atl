@@ -10,8 +10,9 @@ variable scaleval
 
 ( -- )
 : setup 24 0 gpiosetmode . 23 1 gpiosetmode . 23 0 gpiowrite . 24 1 gpiosetpullupdown . 0 1000 gpiosettimerfunc . ;
-: get24bits 0 24 0 do 23 1 1 gpiotrigger drop 24 gpioread 25 i - shift + loop 23 1 1 gpiotrigger drop ; ( MSB first )
-: timer 24 gpioread 0 = if get24bits dup rawval ! tareval @ -  scaleval @ / . cr then ;
+: get24bits 0 24 0 do 23 1 1 gpiotrigger drop 24 gpioread 23 i - shift + loop 23 1 1 gpiotrigger drop
+23 1 1 gpiotrigger drop 23 1 1 gpiotrigger drop ;                                                 ( 27 pulses gives 64 gain )
+: timer 24 gpioread 0 = if get24bits dup rawval ! scaleval @ / tareval @ -  . cr then ;
 
 ( When count is running, you can type TARE as many times as you like to get as close to zero as possible )
 ( -- )
@@ -19,7 +20,7 @@ variable scaleval
 
 ( When count is running, put a known weight on the scale and type e.g. 50 CONFIG where 50 is the weight )
 ( weight -- )
-: config rawval @ tareval @ - swap / scaleval ! ;
+: config rawval @  swap / scaleval ! ;
 
 ( -- )
 : reset 23 100 1 gpiotrigger drop ;
