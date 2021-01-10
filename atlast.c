@@ -3276,7 +3276,58 @@ prim P_pigpio_write() // Write to a gpio pin ( pin level -- result ) result 0 = 
 	S0 = result;
 }
 
+prim P_spi_open() // Open an SPI device ( chan baud flags -- handle )
+{
+	int handle;
+	Sl(3);
+	handle = spiOpen(S2, S1, S0);
+	Pop;
+	Pop;
+	S0 = handle;
+}
 
+prim P_spi_close() // Close an SPI device ( handle -- )
+{
+	int result;
+	Sl(1);
+	result = spiClose(S0);
+	S0 = result;
+}
+
+prim P_spi_read() // Read count bytes from SPI device ( handle strbuffer count -- )
+{
+	int result;
+	Sl(3);
+	result = spiRead(S2, (char *) S1, S0);
+	Pop;
+	Pop;
+	S0 = result;
+}
+
+prim P_spi_write() // Write count bytes from strbuffer to device ( handle strbuffer count -- )
+{
+	int result;
+	Sl(3);
+	result = spiWrite(S2, (char *) S1, S0);
+	Pop;
+	Pop;
+	S0 = result;
+}
+
+prim P_spi_xfer() // Transfer data simultaneously to/from SPI device ( handle txstrbuf rxstrbuf count -- )
+{
+	int result;
+	Sl(4);
+	result = spiXfer(S3, (char *) S2, (char *) S1, S0);
+	Pop;
+	Pop;
+	Pop;
+	S0 = result;
+}
+
+
+	
+	
 
 #endif
 
@@ -3594,6 +3645,11 @@ static struct primfcn primt[] = {
 	  {"0GPIOSETTIMERFUNC",P_pigpio_timer},
 	  {"0GPIOSETTIMERFUNCEX", P_pigpio_timerex},
 	  {"0GPIOSETWATCHDOG", P_pigpio_watchdog}, 
+	  {"0SPIOPEN", P_spi_open},
+	  {"0SPICLOSE",  P_spi_close},
+	  {"0SPIREAD", P_spi_read},
+	  {"0SPIWRITE", P_spi_write},
+	  {"0SPIXFER", P_spi_xfer},
 #endif /* PIGPIO */	  
     {NULL, (codeptr) 0}
 };
