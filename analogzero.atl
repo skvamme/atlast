@@ -1,0 +1,19 @@
+( analogzero )
+variable inbuf
+variable outbuf
+18874367 constant ch0 ( channel 0 single-ended )
+20971519 constant ch1 ( channel 1 single-ended )
+23068671 constant ch2 ( channel 2 single-ended )
+25165823 constant ch3 ( channel 3 single-ended )
+27262975 constant ch4 ( channel 4 single-ended )
+29360127 constant ch5 ( channel 5 single-ended )
+31457279 constant ch6 ( channel 6 single-ended )
+33554431 constant ch7 ( channel 7 single-ended )
+
+: setup 0 1000000 0 spiopen . ch7 inbuf ! ; ( ch7 is input closest to prototype area )
+
+: test 0 inbuf outbuf 3 spixfer .  outbuf @ -8 shift 1023 and . cr ; ( output 0 to 1023 )
+
+: q gpiostop ;
+
+gpiostart . setup

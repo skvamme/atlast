@@ -3298,7 +3298,7 @@ prim P_spi_read() // Read count bytes from SPI device ( handle strbuffer count -
 {
 	int result;
 	Sl(3);
-	result = spiRead(S2, (char *) S1, S0);
+	result = spiRead(S2, (char *) &S1, S0);
 	Pop;
 	Pop;
 	S0 = result;
@@ -3308,15 +3308,16 @@ prim P_spi_write() // Write count bytes from strbuffer to device ( handle strbuf
 {
 	int result;
 	Sl(3);
-	result = spiWrite(S2, (char *) S1, S0);
+	result = spiWrite(S2, (char *) &S1, S0);
 	Pop;
 	Pop;
 	S0 = result;
 }
 
-prim P_spi_xfer() // Transfer data simultaneously to/from SPI device ( handle txstrbuf rxstrbuf count -- )
+prim P_spi_xfer() // Transfer data simultaneously to/from SPI device ( handle txstrbuf rxstrbuf count -- result)
 {
 	int result;
+	
 	Sl(4);
 	result = spiXfer(S3, (char *) S2, (char *) S1, S0);
 	Pop;
