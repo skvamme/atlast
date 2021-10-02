@@ -1,7 +1,7 @@
 # atlast
 ATLAST Forth. Use it standalone, or as a programmable Erlang Port. Documentation: https://elinux.org/Forth
 
-Note to self: If used as an erlang port, use the forth word CR to flush stdout (ports should not use stdin and stdout) to send complete messages back to erlang.
+Note to self: If used as an erlang port, use the forth word CR to flush stdout (buffered output) to send complete messages back to erlang.
 
 Check before first time compile that all extras are out-commented, like this, in atlast.c
 
