@@ -64,7 +64,7 @@
 //#define I2C			      /* I2C functions */
 //#define WIRINGPI		      /* WiringPi functions */
 //#define TELLDUS          	      /* Tellstick functions */
-#define PIGPIO                        /* PIGPIO functions */
+//#define PIGPIO                        /* PIGPIO functions */
 #define MATH			      /* Math functions */
 #define MEMMESSAGE		      /* Print message for stack/heap errors */
 #define PROLOGUE		      /* Prologue processing and auto-init */
@@ -1523,6 +1523,13 @@ prim P_dot()			      /* Print top of stack, pop it */
     Pop;
 }
 
+prim P_emit()                         /* Print integer on top of stack as character */
+{
+    Sl(1);
+    V printf("%c", (int)S0);
+    Pop;
+}
+
 prim P_question()		      /* Print value at address */
 {
     Sl(1);
@@ -2666,6 +2673,11 @@ prim P_system()
     S0 = system((char *) S0);
 }
 
+prim P_kill()
+{
+    exit(0);
+}
+ 
 prim P_juliantime() /* seconds since 1970-01-01 */
 {
     Push = (stackitem) time(NULL);
@@ -3507,6 +3519,7 @@ static struct primfcn primt[] = {
 
 #ifdef SYSTEM
     {"0SYSTEM", P_system},
+    {"0KILL", P_kill},
     {"0TIME", P_juliantime},
 #endif
 #ifdef TRACE
@@ -3564,6 +3577,7 @@ static struct primfcn primt[] = {
 
 #ifdef CONIO
     {"0.", P_dot},
+    {"0EMIT", P_emit},
     {"0?", P_question},
     {"0CR", P_cr},
     {"0.S", P_dots},

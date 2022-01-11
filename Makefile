@@ -8,8 +8,10 @@ CC = gcc
 
 #LIBRARIES = -lm
 # LIBRARIES = -lrt -lm -L/usr/local/lib -lwiringPi -lnopoll -lpigpio
- LIBRARIES = -lrt -lm -L/usr/local/lib -lnopoll -lpigpio
+# LIBRARIES = -lrt -lm -L/usr/local/lib -lnopoll -lpigpio
 
+ LIBRARIES = -lrt -lm -L/usr/local/lib 
+#
 INCLUDE =
 # INCLUDE = -I/usr/local/include/nopoll -Wl,-rpath -Wl,/usr/local/lib
 
