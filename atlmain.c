@@ -158,20 +158,44 @@ int main(argc, argv)
 #endif /* HIGHC */
     while (TRUE) {
 	char t[132];
+	char mouse[4];
+	char mousecom[16];
+	int c;
 
-	//if (!fname)
-     //       V printf(atl_comment ? "(  " :  /* Show pending comment */
-		/* Show compiling state */
-    //            (((heap != NULL) && state) ? ":> " : "-> "));
-	if (fgets(t, 132, ifp) == NULL) {
-	    if (fname && defmode) {
-		fname = defmode = FALSE;
-		ifp = stdin;
-		continue;
+    system("stty raw");
+	c = getc(ifp);
+	system("stty cooked");
+	if (c == 4)
+			exit(0);
+	if (c == 27) {
+		fgets(mouse, 3, ifp);
+		switch (mouse[1]) {
+			case 'M' : 
+				fgets(mouse, 4, ifp);
+				V sprintf(mousecom,"%d %d %d klick\n",mouse[0],mouse[1]-32,mouse[2]-32);
+				V atl_eval(mousecom);
+				break;				
+			default :
+				V printf("\n");
+		}
+		
+      } else {
+	         ungetc(c, ifp);
+	         V printf("%c",c);
+	//	if (!fname)
+	//            V printf(atl_comment ? "(  " :  /* Show pending comment */
+			/* Show compiling state */
+	//                (((heap != NULL) && state) ? ":> " : "-> "));
+		if (fgets(t, 132, ifp) == NULL) {
+		    if (fname && defmode) {
+			fname = defmode = FALSE;
+			ifp = stdin;
+			continue;
+		    }
+		    break;
+		}
+		V atl_eval(t);
 	    }
-	    break;
-	}
-	V atl_eval(t);
     }
     if (!fname)
         V printf("\n");

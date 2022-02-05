@@ -1,105 +1,54 @@
 \ Draw 7-seg sixel graphics in a terminal emulator, Xterm
-\ Turn OFF sixel scrolling, middle mouse button menu in Xterm
+\ Turn OFF sixel scrolling in middle mouse button menu in Xterm, CTRL+middle_mouse_button
+\ Type GREEN EIGHT and BLACK EIGHT RED FOUR
 
 15 string pos
+4 string currentcolor
 
-: color "#0;2;100;100;100#1;2;100;0;0#2;2;0;100;00#3;2;0;0;100" type ; ( Adjust #0 to match your background color )
+: black "#0" currentcolor strcpy ;
+: red "#1" currentcolor strcpy ;
+: green "#2" currentcolor strcpy ;
+: blue "#3" currentcolor strcpy ;
+: white "#4" currentcolor strcpy ;
+: reset 27 emit "c" type ;
+: mouse 27 emit 91 emit "?1000h" type ; ( DECSET CSI ? Pm h )
+: color "#0;2;0;0;0#1;2;100;0;0#2;2;0;100;00#3;2;0;0;100#4;2;100;100;100" type currentcolor type ;
 : end 27 emit 92 emit ;
 : cr_ "$" type ;
 : crlf  "-" type ;
 : left "!9?" pos strcpy ;
 : right "!49?" pos strcpy ;
-: red "#1" type ;
-: bg "#0" type ; 
 : pad 10 1 do crlf loop ; ( top margin )
 : hi ;
 : mid 8 1 do crlf loop ;
 : lo 15 1 do crlf loop ;
-: start 27 emit "Pq" type color pad red ;
-
+: start 27 emit "Pq" type color pad ;
 
 : horizontal "!17?_ow{}!26~}{wo_" type crlf "!17?@BFN^!26~^NFB@" type crlf ;
 : vertical crlf pos type "!2?_ow{{wo_" type crlf pos type 6 1 do "!12~" 
 	type crlf pos type loop "!2?@BFNNFB@" type crlf ;
 
-: wipe start bg 17 1 do "!61~" type crlf loop end ; 
+: wipe start 17 1 do "!61~" type crlf loop end ; 
 
-: zero 
-	start hi horizontal end 
-	start hi right vertical end 
-	start hi left vertical end 
-	start mid left vertical end 
-	start mid right vertical end 
-	start lo horizontal end 
-	cr ;
+: one start hi right vertical end start mid right vertical end ;
 
-: one
-	start right vertical end 
-	start mid right vertical end 
-	cr ;
+: two start hi horizontal end start hi right vertical end start mid horizontal end 
+	start mid left vertical end start lo horizontal end ;
 
-: two
-	start hi horizontal end 
-	start hi right vertical end 
-	start mid horizontal end 
-	start mid left vertical end 
-	start lo horizontal end 
-	cr ;
+: three one start hi horizontal end start mid horizontal end start lo horizontal end ;
 
-: three
-	start hi horizontal end 
-	start hi right vertical end 
-	start mid horizontal end 
-	start mid right vertical end 
-	start lo horizontal end 
-	cr ;
+: four one start hi left vertical end start mid horizontal end ;
 
-: four 
-	start hi right vertical end 
-	start hi left vertical end 
-	start mid horizontal end 
-	start mid right vertical end 
-	cr ;
+: five start hi horizontal end start hi left vertical end start mid horizontal end 
+	start mid right vertical end start lo horizontal end ;
 
-: five 
-	start hi horizontal end 
-	start hi left vertical end 
-	start mid horizontal end 
-	start mid right vertical end 
-	start lo horizontal end 
-	cr ;
+: six five start mid left vertical end ;
 
-: six 
-	start hi horizontal end 
-	start hi left vertical end 
-	start mid horizontal end 
-	start mid left vertical end 
-	start mid right vertical end 
-	start lo horizontal end 
-	cr ;
+: seven one start hi horizontal end ;
 
-: seven 
-	start hi horizontal end 
-	start hi right vertical end 
-	start mid right vertical end 
-	cr ;
+: nine four start hi horizontal end ;
 
-: eight 
-	start hi horizontal end 
-	start hi right vertical end 
-	start hi left vertical end 
-	start mid horizontal end 
-	start mid left vertical end 
-	start mid right vertical end 
-	start lo horizontal end 
-	cr ;
+: zero one start hi horizontal end start hi left vertical end 
+	start mid left vertical end start lo horizontal end ;
 
-: nine 
-	start hi horizontal end 
-	start hi right vertical end 
-	start hi left vertical end 
-	start mid horizontal end 
-	start mid right vertical end 
-	cr ;
-
-
+: eight zero start mid horizontal end ;

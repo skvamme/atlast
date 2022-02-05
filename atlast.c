@@ -2683,6 +2683,16 @@ prim P_juliantime() /* seconds since 1970-01-01 */
     Push = (stackitem) time(NULL);
 }
 
+prim P_klick() /* Mouseklicks from a terminal emulator, eg Xterm */
+{
+	Sl(3);
+    V printf("%ld ", S0); // row
+    V printf("%ld ", S1); // column
+    V printf("%ld \n", S2); // mouse down/up
+    Pop;
+    Pop;
+    Pop;
+}
 #endif /* SYSTEM */
 
 #ifdef TRACE
@@ -3521,6 +3531,7 @@ static struct primfcn primt[] = {
     {"0SYSTEM", P_system},
     {"0KILL", P_kill},
     {"0TIME", P_juliantime},
+    {"0KLICK", P_klick},
 #endif
 #ifdef TRACE
     {"0TRACE", P_trace},
