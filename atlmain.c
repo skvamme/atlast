@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include<curses.h>
 
 #include <signal.h>
 #include "atldef.h"
@@ -159,29 +160,34 @@ int main(argc, argv)
     while (TRUE) {
 	char t[132];
 	char mouse[4];
-	char mousecom[16];
+	char mousedata[16];
 	int c = 0;
 
-//	system("stty raw");
-//	c = getc(ifp);
-//	ungetc(c, ifp);
-//	system("stty cooked");
-//	V printf("c is: %d",c);
+	system("stty -ctlecho");
+	system("stty raw");
+	c = getc(ifp);
+	system("stty cooked");
+	system("stty ctlecho");
 	if (c == 4)
 		exit(0);
+	if (c == 13) {
+		V printf("\n");
+		continue;
+	}
 	if (c == 27) {
 		fgets(mouse, 3, ifp);
 		switch (mouse[1]) {
 			case 'M' : 
 				fgets(mouse, 4, ifp);
-				V sprintf(mousecom,"%d %d %d klick\n",mouse[0],mouse[1]-32,mouse[2]-32);
-				V atl_eval(mousecom);
+				V sprintf(mousedata,"%d %d %d klick\n",mouse[0],mouse[1]-32,mouse[2]-32);
+				V atl_eval(mousedata);
 				break;				
 			default :
 				V printf("%d\n",mouse[1]);
 		}
-		
+		continue;
       } else {
+	      	ungetc(c, ifp);
 	//	if (!fname)
 	//            V printf(atl_comment ? "(  " :  /* Show pending comment */
 			/* Show compiling state */
