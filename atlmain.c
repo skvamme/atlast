@@ -160,13 +160,15 @@ int main(argc, argv)
 	char t[132];
 	char mouse[4];
 	char mousecom[16];
-	int c;
+	int c = 0;
 
-    system("stty raw");
-	c = getc(ifp);
-	system("stty cooked");
+//	system("stty raw");
+//	c = getc(ifp);
+//	ungetc(c, ifp);
+//	system("stty cooked");
+//	V printf("c is: %d",c);
 	if (c == 4)
-			exit(0);
+		exit(0);
 	if (c == 27) {
 		fgets(mouse, 3, ifp);
 		switch (mouse[1]) {
@@ -176,12 +178,10 @@ int main(argc, argv)
 				V atl_eval(mousecom);
 				break;				
 			default :
-				V printf("\n");
+				V printf("%d\n",mouse[1]);
 		}
 		
       } else {
-	         ungetc(c, ifp);
-	         V printf("%c",c);
 	//	if (!fname)
 	//            V printf(atl_comment ? "(  " :  /* Show pending comment */
 			/* Show compiling state */
