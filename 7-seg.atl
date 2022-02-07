@@ -12,7 +12,8 @@
 : white "#4" currentcolor strcpy ;
 : reset 27 emit "c" type ;
 : mouse 27 emit 91 emit "?1000h" type ; ( DECSET CSI ? Pm h )
-: color "#0;2;0;0;0#1;2;100;0;0#2;2;0;100;00#3;2;0;0;100#4;2;100;100;100" type currentcolor type ;
+: color "#0;2;0;0;0#1;2;100;0;0#2;2;0;100;00#3;2;0;0;100#4;2;100;100;100" 
+   type currentcolor type ;
 : end 27 emit 92 emit ;
 : cr_ "$" type ;
 : crlf  "-" type ;
@@ -52,3 +53,7 @@
 	start mid left vertical end start lo horizontal end ;
 
 : eight zero start mid horizontal end ;
+
+: run red eight cr 1 longsleep black eight cr blue seven cr 1 longsleep black seven cr 
+ green five cr 1 longsleep black five cr red four cr 1 longsleep black four cr 
+ blue three cr ;
