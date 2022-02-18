@@ -1,6 +1,5 @@
 \ Draw 7-seg sixel graphics in a terminal emulator, Xterm
-\ Turn OFF sixel scrolling in middle mouse button menu in Xterm, CTRL+middle_mouse_button
-\ Type GREEN EIGHT and BLACK EIGHT RED FOUR
+\ Type RUN
 
 15 string pos
 4 string currentcolor
@@ -11,7 +10,11 @@
 : blue "#3" currentcolor strcpy ;
 : white "#4" currentcolor strcpy ;
 : reset 27 emit "c" type ;
+: noscroll 27 emit 91 emit "?80l" type ; ( disable sixel scrolling, will change to ?80h in xterm 369 )
+: scroll 27 emit 91 emit "?80h" type ;   ( ?80l in xterm <= 369 )
 : mouse 27 emit 91 emit "?1000h" type ; ( DECSET CSI ? Pm h )
+\ Uncomment next line to redefine the mouse KLICK word.
+\ : klick 2 pick 35 = if drop drop drop ." " Row " . ." " Col ". ." " Button " . then ; 
 : color "#0;2;0;0;0#1;2;100;0;0#2;2;0;100;00#3;2;0;0;100#4;2;100;100;100" 
    type currentcolor type ;
 : end 27 emit 92 emit ;
@@ -54,6 +57,16 @@
 
 : eight zero start mid horizontal end ;
 
-: run red eight cr 1 longsleep black eight cr blue seven cr 1 longsleep black seven cr 
- green five cr 1 longsleep black five cr red four cr 1 longsleep black four cr 
- blue three cr ;
+: longsleep1 flush longsleep ;
+
+: run reset noscroll red zero 1 longsleep1 black zero
+blue one 1 longsleep1 black one
+green two  1 longsleep1 black two
+red three  1 longsleep1 black three
+blue four  1 longsleep1 black four  
+green five  1 longsleep1 black five
+red six  1 longsleep1 black six
+blue seven  1 longsleep1 black seven
+green eight  1 longsleep1 black eight
+red nine  1 longsleep1 black nine
+blue zero ;

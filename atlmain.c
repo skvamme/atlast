@@ -179,7 +179,7 @@ int main(argc, argv)
 		switch (mouse[1]) {
 			case 'M' : 
 				fgets(mouse, 4, ifp);
-				V sprintf(mousedata,"%d %d %d klick\n",mouse[0],mouse[1]-32,mouse[2]-32);
+				V sprintf(mousedata,"%d %d %d klick\n",mouse[0]-32,mouse[1]-32,mouse[2]-32);
 				V atl_eval(mousedata);
 				break;				
 			default :

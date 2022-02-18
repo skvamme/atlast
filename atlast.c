@@ -1509,6 +1509,40 @@ prim P_tan()			      /* Tangent */
     Mathfunc(tan);
 }
 #undef Mathfunc
+
+prim P_srandom()			/* Random seed,  int -- */
+{
+	Sl(1);
+	srandom(S0);
+	Pop;
+}
+
+prim P_random()			/* Random number,  -- int */
+{
+	stackitem t;
+	
+	So(1);
+	t = random(),
+	Push = t;
+}
+
+prim P_maxrandom()        /* Random between 0 and max, intmax -- int  */
+{
+  Sl(1);
+  unsigned long nb = (unsigned long) S0 + 1;
+  unsigned long nr = (unsigned long) RAND_MAX + 1;
+  unsigned long bs = nr / nb;
+  unsigned long rest   = nr % nb;
+  long x;
+
+  do {
+    x = random();
+  } while (nr - rest <= (unsigned long)x);
+
+  S0 = x/bs;
+}
+
+
 #endif /* MATH */
 #endif /* REAL */
 
@@ -1541,6 +1575,11 @@ prim P_question()		      /* Print value at address */
 prim P_cr()			      /* Carriage return */
 {
     V printf("\n");
+    fflush(stdout);
+}
+
+prim P_flush()			      /* Flush stdout */
+{
     fflush(stdout);
 }
 
@@ -3493,6 +3532,9 @@ static struct primfcn primt[] = {
     {"0SIN", P_sin},
     {"0SQRT", P_sqrt},
     {"0TAN", P_tan},
+    {"0SRANDOM", P_srandom},
+    {"0RANDOM", P_random},
+    {"0MAXRANDOM", P_maxrandom},
 #endif /* MATH */
 #endif /* REAL */
 
@@ -3591,6 +3633,7 @@ static struct primfcn primt[] = {
     {"0EMIT", P_emit},
     {"0?", P_question},
     {"0CR", P_cr},
+    {"0FLUSH", P_flush},
     {"0.S", P_dots},
     {"1.\"", P_dotquote},
     {"1.(", P_dotparen},
