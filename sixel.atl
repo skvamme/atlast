@@ -25,7 +25,7 @@
 
 : hor_ticks  "#0!34?" type 14 1 do "N!34?" type loop crlf ;
 : hor_num "     0     1     2     3     4    5     6     7     8     9    10    11    12" type ;
-: ver_num 12 up "  5" type cr cr "  4" type cr cr "  3" type cr cr "  2" type cr cr "  1" type cr cr "  0" type cr cr ;
+: ver_num 11 up "  4" type cr cr "  3" type cr cr "  2" type cr cr "  1" type cr cr "  0" type cr cr cr cr ;
 
 
 : run filldata start color y_arrow 20 1 do i plot yaxis loop hor_line hor_ticks end hor_num cr ver_num cr ;
