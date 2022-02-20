@@ -5,7 +5,7 @@ to get X and Y plus mouseup/down info for each mouse button. Redefine the word K
 
 ATLAST Forth. Use it standalone, or as a programmable Erlang Port. Documentation: https://elinux.org/Forth
 
-Note to self: If used as an erlang port, use the forth word CR to flush stdout (buffered output) to send complete messages back to erlang.
+Note to self: If used as an erlang port, use the forth word CR or FLUSH to flush stdout (buffered output) to send complete messages back to erlang.
 
 Check before first time compile that all extras are out-commented, like this, in atlast.c
 
