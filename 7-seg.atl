@@ -9,12 +9,17 @@
 : green "#2" currentcolor strcpy ;
 : blue "#3" currentcolor strcpy ;
 : white "#4" currentcolor strcpy ;
+
 : reset 27 emit "c" type ;
+: clear_ 27 emit 91 emit "2J" type ;
+: home 27 emit 91 emit "H" type ; 
+: clearhome clear_  home ;
 : noscroll 27 emit 91 emit "?80l" type ; ( disable sixel scrolling, will change to ?80h in xterm 369 )
 : scroll 27 emit 91 emit "?80h" type ;   ( ?80l in xterm <= 369 )
 : mouse 27 emit 91 emit "?1000h" type ; ( DECSET CSI ? Pm h )
 \ Uncomment next line to redefine the mouse KLICK word.
 \ : klick 2 pick 35 = if drop drop drop ." " Row " . ." " Col ". ." " Button " . then ; 
+
 : color "#0;2;0;0;0#1;2;100;0;0#2;2;0;100;00#3;2;0;0;100#4;2;100;100;100" 
    type currentcolor type ;
 : end 27 emit 92 emit ;
@@ -31,8 +36,6 @@
 : horizontal "!17?_ow{}!26~}{wo_" type crlf "!17?@BFN^!26~^NFB@" type crlf ;
 : vertical crlf pos type "!2?_ow{{wo_" type crlf pos type 6 1 do "!12~" 
 	type crlf pos type loop "!2?@BFNNFB@" type crlf ;
-
-: wipe start 17 1 do "!61~" type crlf loop end ; 
 
 : one start hi right vertical end start mid right vertical end ;
 
@@ -58,6 +61,8 @@
 : eight zero start mid horizontal end ;
 
 : longsleep1 flush longsleep ;
+
+noscroll home
 
 : run reset noscroll red zero 1 longsleep1 black zero
 blue one 1 longsleep1 black one
