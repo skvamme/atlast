@@ -39,7 +39,5 @@ variable row
 : hor_num "     0     1     2     3     4     5     6     7     8     9   10    11    12" type ;
 : ver_num "400 -" type cr cr "300 -" type cr cr "200 -" type cr cr "100 -" type cr cr "  0" type ;
 
-
 : run filldata cr cr cr cr ver_num cr cr hor_num cr 
 	start color y_arrow 20 1 do i plot yaxis loop hor_line hor_ticks end  ;
-
