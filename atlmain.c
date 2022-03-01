@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include<curses.h>
 
 #include <signal.h>
 #include "atldef.h"
