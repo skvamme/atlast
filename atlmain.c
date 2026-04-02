@@ -158,10 +158,10 @@ int main(argc, argv)
 #endif /* HIGHC */
     while (TRUE) {
 	char t[132];
-	//	if (!fname)
-	//            V printf(atl_comment ? "(  " :  /* Show pending comment */
+		if (!fname)
+	            V printf(atl_comment ? "(  " :  /* Show pending comment */
 			/* Show compiling state */
-	//                (((heap != NULL) && state) ? ":> " : "-> "));
+	                (((heap != NULL) && state) ? ":> " : "-> "));
 		if (fgets(t, 132, ifp) == NULL) {
 		    if (fname && defmode) {
 			fname = defmode = FALSE;
