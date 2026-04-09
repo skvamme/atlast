@@ -172,7 +172,7 @@ int main(argc, argv)
 		}
 		V atl_eval(t);
 	    }
-    }
+    
     if (!fname)
         V printf("\n");
     return 0;
