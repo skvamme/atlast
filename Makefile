@@ -33,9 +33,6 @@ atlast.o:   atlast.c atldef.h
 atldef.h:   atlast.h
 atlmain.o:  atlmain.c atlast.h
 
-primdeftest:
-	$(CC) $(CFLAGS) primdeftest.c atlast.c -o primdeftest $(LIBRARIES)
-
 #	Run the Atlast regression test
 
 regression:
@@ -61,7 +58,6 @@ dist:
 	cp -p atlast.c atlast.h tex/atlast.pdf atldef.h \
 		atlast.html \
 		atlmain.c COPYING log.txt Makefile MANIFEST \
-		primdeftest.c \
 		regout.txt regress.atl dist/atlast-$(VERSION)
 	mkdir dist/atlast-$(VERSION)/tex
 	cp -p tex/*.tex tex/*.sty tex/Makefile dist/atlast-$(VERSION)/tex
