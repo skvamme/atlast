@@ -22,7 +22,7 @@ CFLAGS = $(COPTIONS) $(INCLUDE) $(ATLCONFIG)
 ATLOBJ = atlast.o atlmain.o
 # ATLOBJ = atlast.o gb_common.o gb_spi.o atlmain.o
 
-APPS = atlast primdeftest
+APPS = atlast
 
 all:	$(APPS)
 
